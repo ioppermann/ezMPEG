@@ -35,7 +35,7 @@ know how a MPEG1 video encoder works.
 1.1 Features
 - based on ISO-11172.2 Specs
 - I frame encoding
-- GOP size can be defines
+- GOP size can be defined
 - quality settings can be defined
 - multiple parallel streams
 - variable bitrate

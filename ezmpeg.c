@@ -19,6 +19,10 @@
 #include <string.h>
 #include "ezmpeg.h"
 
+#ifndef M_PI
+#define M_PI	3.14159265358979323846
+#endif
+
 #define c(i) (((i) == 0) ? 0.3535534 : 0.5)		// 1 / (0.5 * sqrt(2))
 
 #define LUMINANCE 1
@@ -854,78 +858,78 @@ void ezMPEG_EncodeDC(ezMPEGStream *ms, int dc_diff, int type)
 		return;
 	}
 
-	if(dc_diff < 0) {
-		if(dc_diff == -1) {
-			code = diff_dc_add_codes_neg[1];
- 			length = diff_dc_add_length[1];
- 		}
-		else if(dc_diff <= -2 && dc_diff >= -3) {
-			code = diff_dc_add_codes_neg[2] - (-2 - dc_diff);
-			length = diff_dc_add_length[2];
+	if(dc_diff < 0)
+		ezMPEG_WriteBits(ms, 0, 1);		// negative
+	else
+		ezMPEG_WriteBits(ms, 1, 1);		// positive
+
+	if(dc_diff_abs == 1)	// ist schon durch das Vorzeichen erledigt
+		return;
+
+	if(dc_diff > 0) {
+		if(dc_diff_abs >= 2 && dc_diff_abs <= 3) {
+			code = dc_diff_abs - 2;
+			length = diff_dc_add_length[2] - 1;
 		}
-		else if(dc_diff <= -4 && dc_diff >= -7) {
-			code = diff_dc_add_codes_neg[3] - (-4 - dc_diff);
-			length = diff_dc_add_length[3];
+		else if(dc_diff_abs >= 4 && dc_diff_abs <= 7) {
+			code = dc_diff_abs - 4;
+			length = diff_dc_add_length[3] - 1;
 		}
-		else if(dc_diff <= -8 && dc_diff >= -15) {
-			code = diff_dc_add_codes_neg[4] - (-8 - dc_diff);
-			length = diff_dc_add_length[4];
+		else if(dc_diff_abs >= 8 && dc_diff_abs <= 15) {
+			code = dc_diff_abs - 8;
+			length = diff_dc_add_length[4] - 1;
 		}
-		else if(dc_diff <= -16 && dc_diff >= -31) {
-			code = diff_dc_add_codes_neg[5] - (-16 - dc_diff);
-			length = diff_dc_add_length[5];
+		else if(dc_diff_abs >= 16 && dc_diff_abs <= 31) {
+			code = dc_diff_abs - 16;
+			length = diff_dc_add_length[5] - 1;
 		}
-		else if(dc_diff <= -32 && dc_diff >= -63) {
-			code = diff_dc_add_codes_neg[6] - (-32 - dc_diff);
-			length = diff_dc_add_length[6];
+		else if(dc_diff_abs >= 32 && dc_diff_abs <= 63) {
+			code = dc_diff_abs - 32;
+			length = diff_dc_add_length[6] -1;
 		}
-		else if(dc_diff <= -64 && dc_diff >= -127) {
-			code = diff_dc_add_codes_neg[7] - (-64 - dc_diff);
-			length = diff_dc_add_length[7];
+		else if(dc_diff_abs >= 64 && dc_diff_abs <= 127) {
+			code = dc_diff_abs - 64;
+			length = diff_dc_add_length[7] - 1;
 		}
-		else if(dc_diff <= -128 && dc_diff >= -255) {
-			code = diff_dc_add_codes_neg[8] - (-128 - dc_diff);
-			length = diff_dc_add_length[8];
-		}
-		else {
-			ezMPEG_SetError(ms, "ezMPEG_EncodeDC: FATAL! dc difference < -255");
-		}
-	}
-	else {
-		if(dc_diff == 1) {
-			code = diff_dc_add_codes_pos[1];
-			length = diff_dc_add_length[1];
-		}
-		else if(dc_diff >= 2 && dc_diff <= 3) {
-			code = diff_dc_add_codes_pos[2] + (dc_diff - 2);
-			length = diff_dc_add_length[2];
-		}
-		else if(dc_diff >= 4 && dc_diff <= 7) {
-			code = diff_dc_add_codes_pos[3] + (dc_diff - 4);
-			length = diff_dc_add_length[3];
-		}
-		else if(dc_diff >= 8 && dc_diff <= 15) {
-			code = diff_dc_add_codes_pos[4] + (dc_diff - 8);
-			length = diff_dc_add_length[4];
-		}
-		else if(dc_diff >= 16 && dc_diff <= 31) {
-			code = diff_dc_add_codes_pos[5] + (dc_diff - 16);
-			length = diff_dc_add_length[5];
-		}
-		else if(dc_diff >= 32 && dc_diff <= 63) {
-			code = diff_dc_add_codes_pos[6] + (dc_diff - 32);
-			length = diff_dc_add_length[6];
-		}
-		else if(dc_diff >= 64 && dc_diff <= 127) {
-			code = diff_dc_add_codes_pos[7] + (dc_diff - 64);
-			length = diff_dc_add_length[7];
-		}
-		else if(dc_diff >= 128 && dc_diff <= 255) {
-			code = diff_dc_add_codes_pos[8] + (dc_diff - 128);
-			length = diff_dc_add_length[8];
+		else if(dc_diff_abs >= 128 && dc_diff_abs <= 255) {
+			code = dc_diff_abs - 128;
+			length = diff_dc_add_length[8] - 1;
 		}
 		else {
 			ezMPEG_SetError(ms, "ezMPEG_EncodeDC: FATAL! dc difference > 255");
+		}
+	}
+	else {
+		if(dc_diff_abs >= 2 && dc_diff_abs <= 3) {
+			code = 3 - dc_diff_abs;
+			length = diff_dc_add_length[2] - 1;
+		}
+		else if(dc_diff_abs >= 4 && dc_diff_abs <= 7) {
+			code = 7 - dc_diff_abs;
+			length = diff_dc_add_length[3] - 1;
+		}
+		else if(dc_diff_abs >= 8 && dc_diff_abs <= 15) {
+			code = 15 - dc_diff_abs;
+			length = diff_dc_add_length[4] - 1;
+		}
+		else if(dc_diff_abs >= 16 && dc_diff_abs <= 31) {
+			code = 31 - dc_diff_abs;
+			length = diff_dc_add_length[5] - 1;
+		}
+		else if(dc_diff_abs >= 32 && dc_diff_abs <= 63) {
+			code = 63 - dc_diff_abs;
+			length = diff_dc_add_length[6] -1;
+		}
+		else if(dc_diff_abs >= 64 && dc_diff_abs <= 127) {
+			code = 127 - dc_diff_abs;
+			length = diff_dc_add_length[7] - 1;
+		}
+		else if(dc_diff_abs >= 128 && dc_diff_abs <= 255) {
+			code = 255 - dc_diff_abs;
+			length = diff_dc_add_length[8] - 1;
+		}
+		else {
+			ezMPEG_SetError(ms, "ezMPEG_EncodeDC: FATAL! dc difference < -255");
 		}
 	}
 
