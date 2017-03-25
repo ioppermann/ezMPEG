@@ -14,14 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "ezmpeg.h"
+#include "../ezmpeg.h"
 
 int main(int argc, char *argv[])
 {
 	FILE *in;
 	int i, j, m;
 	char *picture;
-	char name[16];
 	clock_t dur;
 	ezMPEGStream ms;
 
@@ -33,8 +32,7 @@ int main(int argc, char *argv[])
 		printf("%s\n", ezMPEG_GetLastError(&ms));
 
 	for(m = 0; m < 75; m++) {
-		strcpy(name, "ezmpeg_test.ppm");
-		if((in = fopen(name, "rb")) == NULL)
+		if((in = fopen("ezmpeg_test.ppm", "rb")) == NULL)
 			exit(1);
 
 		fseek(in, 45, SEEK_SET);

@@ -24,11 +24,10 @@ http://sourceforge.net/projects/ezmpeg
 
 ezMPEG is an easy-to-use and easy-to-understand MPEG1 video encoder API
 
-This documentation is still in development and incomplete. The exact description
-of the encoder API will follow as soon as possible. Until then please have a
-look at the example within this release to see how it works.
+The documentation of the API is still in development and incomplete. It can
+be found in 'doc/ezmpeg.txt'
 
 To use the API just include 'ezmpeg.h' in your files and compile with
-gcc yourfile.c ezmpeg.c -o yourfile
+gcc yourfile.c ezmpeg.c -o yourfile -lm
 
 You are free to use any other C compiler than gcc
