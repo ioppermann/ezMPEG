@@ -20,11 +20,11 @@ int main(int argc, char *argv[])
 {
 	FILE *in;
 	int i, j, m;
-	char *picture;
+	unsigned char *picture;
 	clock_t dur;
 	ezMPEGStream ms;
 
-	picture = (char *)malloc(3 * 320 * 240 * sizeof(char));
+	picture = (unsigned char *)malloc(3 * 320 * 240 * sizeof(unsigned char));
 
 	if(!ezMPEG_Init(&ms, "ezmpeg_test.mpeg", 320, 240, 25, 30, 2))
 		printf("%s\n", ezMPEG_GetLastError(&ms));
