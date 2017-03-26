@@ -1,15 +1,5 @@
 //This file is part of ezMPEG
-//Copyright (C)2002 Ingo Oppermann ( ingo_opp@users.sourceforge.net / http://sourceforge.net/projects/ezmpeg/ )
-//
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either
-//version 2 of the License, or (at your option) any later version.
-//
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+//Copyright (c) 2002 Ingo Oppermann
 
 // Version 0.1
 
@@ -54,7 +44,7 @@ int diff_dc_add_codes_pos[9] = {0x0, 0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80}
 int diff_dc_add_codes_neg[9] = {0x0, 0x0, 0x1, 0x3, 0x7, 0xF, 0x1F, 0x3F, 0x7F};
 int diff_dc_add_length[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-// Tabelle D.15, der Index ist level ohne Vorzeichen, das muss noch extra hinzugefügt werden!
+// Tabelle D.15, der Index ist level ohne Vorzeichen, das muss noch extra hinzugefÃ¼gt werden!
 // Bei Index==0 steht drin, wieviele Levels da sind
 
 int ac_codes_intra0[41] = {40, 3, 4, 5, 6, 38, 33, 10, 29, 24, 19, 16, 26, 25, 24, 23, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 24, 23, 22, 21, 20, 19, 18, 17, 16};
@@ -245,7 +235,7 @@ int ezMPEG_Init(ezMPEGStream *ms, const char *outfile, int hsize, int vsize, int
 	ms->error_code = 0;
 	strcpy(ms->error_msg, "");
 
-	// Cosinustabelle füllen
+	// Cosinustabelle fÃ¼llen
 	for(i = 0; i < 8; i++) {
 		for(j = 0; j < 4; j++) {
 			if((i % 2))		// ungerade
@@ -522,8 +512,8 @@ void ezMPEG_WritePictureHeader(ezMPEGStream *ms)
 	ezMPEG_ByteAlign(ms);
 	ezMPEG_WriteBits(ms, 0x100, 32);	// picture_start_code (0x100)
 
-	// temporal_reference (0) wird bei jedem Bild in dieser GOP um 1 erhöht
-	// und fängt bei einer neuen GOP wieder bei 0 an
+	// temporal_reference (0) wird bei jedem Bild in dieser GOP um 1 erhÃ¶ht
+	// und fÃ¤ngt bei einer neuen GOP wieder bei 0 an
 	ezMPEG_WriteBits(ms, ms->picture_count % ms->gop_size, 10);
 
 	ezMPEG_WriteBits(ms, 1, 3);		// picture_coding_type (1, I-Picture)
@@ -536,7 +526,7 @@ void ezMPEG_WritePictureHeader(ezMPEGStream *ms)
 	ezMPEG_WriteBits(ms, 0x101, 32);	// slice_start_code (vertikale Position diese Slices in Macroblockeinheiten)
 									// horizontale Position gegeben durch macroblock_address(_increment) des ersten
 									// Macroblocks in diesem Slice. Jeder Slice ist 16 Pels hoch
-									// Reset der DC-Keoff. für differential-Codierung
+									// Reset der DC-Keoff. fÃ¼r differential-Codierung
 									// dc_lum_prev = 128, dc_cb_prev = 128, dc_cr_prev = 128
 									// slice_vertical_position = macroblock_row + 1;
 
@@ -639,7 +629,7 @@ Macroblock ezMPEG_QuantizeMacroblock(ezMPEGStream *ms, Macroblock mb)
 
 	// Ueber alle Luminanceblocks gehen
 	for(l = 0; l < 4; l++) {
-		// Ueber alle Einträge im Block gehen
+		// Ueber alle EintrÃ¤ge im Block gehen
 		for(i = 0; i < 8; i++) {
 			for(j = 0; j < 8; j++) {
 
@@ -661,7 +651,7 @@ Macroblock ezMPEG_QuantizeMacroblock(ezMPEGStream *ms, Macroblock mb)
 
 	// Ueber alle Chrominanceblocks gehen
 	for(l = 0; l < 2; l++) {
-		// Ueber alle Einträge im Block gehen
+		// Ueber alle EintrÃ¤ge im Block gehen
 		for(i = 0; i < 8; i++) {
 			for(j = 0; j < 8; j++) {
 
@@ -718,7 +708,7 @@ void ezMPEG_EncodeAC(ezMPEGStream *ms, int runlength, int level)
 		// Table D.16, Codierung der Runlenght, wenn runlength/level-Kombination in Tabel D.15 nicht vorkommt:
 		ezMPEG_WriteBits(ms, runlength, 6);
 
-		// Der Escape-Code wurde oben schon ausgegeben und es ist kein Array nötig, da die runlength direkt codiert wird
+		// Der Escape-Code wurde oben schon ausgegeben und es ist kein Array nÃ¶tig, da die runlength direkt codiert wird
 
 		// Hier kommet noch Tabelle D.17 zur Anwendung
 		// Hier muss noch der Level codiert werden:
